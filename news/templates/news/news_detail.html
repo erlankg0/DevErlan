@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+{% block title %}
+    Новость ::  {{ news_item.title }}
+{% endblock %}
+{% block sidebar %}
+    {% include 'news/list_categories.html' %}
+{% endblock %}
+{% block content %}
+
+        <div class="card text-center">
+            <div class="card-header">
+                Категория : <a href=" {{ news_item.category.get_absolute_url }}">{{ item.category.name }}</a>
+            </div>
+            <div class="card-body">
+                <div class="media">
+                    {% if news_item.photo.url %}
+                        <img src="{{ news_item.photo.url }}" class="img-fluid float-left" alt="...">
+                    {% else %}
+                        <p>Нету фотографии.</p>
+                    {% endif %}
+
+                    <div class="media-body">
+                        <h5 class="card-title {% cycle 'text-danger' 'text-success' %}">{{ news_item.title }}</h5>
+                        <p class="card-text">{{ news_item.content }}.</p>
+                    </div>
+                    <div class="card-footer text-muted">
+                        {{ news_item.created_at | date:"Y-m-d" }}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+{% endblock %}

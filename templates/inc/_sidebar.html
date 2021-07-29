@@ -1,0 +1,9 @@
+{% for item_categor in categories %}
+    <div class="list-group">
+        <a href="{{ item_categor.get_absolute_url }}"
+           class="list-group-item list-group-item-action active"
+           aria-current="true">
+            {{ item_categor.name }}
+        </a>
+    </div><!-- End List Categories -->
+{% endfor %}

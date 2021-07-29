@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+{% block title %}
+    {{ title }}
+{% endblock %}
+{% block sidebar %}
+    {% for item_categor in news %}
+        <div class="list-group">
+            <a href="{{ item_categor.category.get_absolute_url }}"
+               class="list-group-item list-group-item-action active"
+               aria-current="true">
+                {{ item_categor.category.name }}
+            </a>
+        </div><!-- End List Categories -->
+    {% endfor %}
+
+{% endblock %}
+{% block content %}
+
+    {% for item in news %}
+        <div class="card text-center">
+            <div class="card-header">
+                Категория : <a href=" {{ item.category.get_absolute_url }}">{{ item.category.name }}</a>
+            </div>
+            <div class="card-body">
+                <div class="media">
+                    {% if item.photo.url %}
+                        <img src="{{ item.photo.url }}" class="img-fluid" alt="...">
+                    {% else %}
+                        <p>Нету фотографии.</p>
+                    {% endif %}
+
+                    <div class="media-body">
+                        <h5 class="card-title {% cycle 'text-danger' 'text-success' %}">{{ item.title }}</h5>
+                        <p class="card-text">{{ item.content }}.</p>
+                        <a href="{{ item.get_absolute_url }}" class="btn btn-primary">Читать...</a>
+                    </div>
+                    <div class="card-footer text-muted">
+                        {{ item.created_at | date:"Y-m-d" }}
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+
+{% endblock %}
