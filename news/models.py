@@ -18,13 +18,14 @@ class Category(models.Model):
 
 
 class News(models.Model):
-    category = models.ForeignKey(Category, on_delete=models.PROTECT)
+    category = models.ForeignKey(Category, on_delete=models.PROTECT, related_name='get_news')
     title = models.CharField(max_length=255, verbose_name='Наименования')
     content = models.TextField(blank=True, verbose_name='Контент')
     created_at = models.DateField(auto_now_add=True, verbose_name='Дата пуб.')
     updated_at = models.DateField(auto_now=True, verbose_name='Дата измен')
     photo = models.ImageField(upload_to='photo/%Y/%m/%d/', verbose_name='Изобр')
     is_published = models.BooleanField(default=True)
+    views = models.IntegerField(default=0)
 
     def get_absolute_url(self):
         return reverse('view_news', kwargs={'pk': self.pk})
