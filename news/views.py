@@ -1,13 +1,17 @@
 from django.views.generic import ListView, DetailView, CreateView
-
+from django.core.paginator import Paginator
 from .forms import NewsForm
 from .models import News, Category
 
+from .utils import MyMixin
 
-class HomeNews(ListView):
+
+class HomeNews(ListView, MyMixin):
+    paginate_by = 2
     model = News
     template_name = 'news/index.html'
     context_object_name = 'news'
+    mixin_prop = 'hello world'
 
     def get_queryset(self):
         return News.objects.filter(is_published=True)
@@ -16,6 +20,7 @@ class HomeNews(ListView):
         context = super(HomeNews, self).get_context_data(**kwargs)
         context['title'] = 'Главная страница'
         context['categories'] = Category.objects.all()
+        context['mixin'] = self.get_prop()
         return context
 
 
