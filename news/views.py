@@ -1,10 +1,34 @@
+from django.contrib import messages
 from django.core.paginator import Paginator
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.views.generic import ListView, DetailView, CreateView
 
-from .forms import NewsForm
+from .forms import NewsForm, UserRegisterForm
 from .models import News, Category
 from .utils import MyMixin
+
+
+def register(request):
+    if request.method == 'POST':
+        form = UserRegisterForm(request.POST)
+        categories = Category.objects.all()
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Вы зарегистрировались.')
+            return redirect('login')
+        else:
+            messages.error(request, 'Ошибка')
+    else:
+        form = UserRegisterForm()
+        categories = Category.objects.all()
+
+    return render(request, 'news/register.html', {'form': form, 'categories': categories})
+
+
+def login(request):
+    categories = Category.objects.all()
+
+    return render(request, 'news/login.html')
 
 
 def test(request):

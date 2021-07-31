@@ -9,15 +9,6 @@
     <!-- Bootstrap CSS -->
     <link href="{% static 'bootstrap\css\bootstrap.min.css' %}" rel="stylesheet"
           integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
-    <style>
-        .list-group-item {
-            margin-top: 5px;
-        }
-
-        .col-md-8 {
-            margin-top: 5px;
-        }
-    </style>
     <title>{% block title %}
         Список новостей!
     {% endblock %}</title>
@@ -36,6 +27,21 @@
             {% endblock %}
         </div>
         <div class="col-md-9">
+            {% if messages %}
+                {% for message in messages %}
+                    {% if message.tags == 'error' %}
+                        <div class="alert alert-danger" role="alert">
+                            {{ message }}
+                        </div>
+                    {% else %}
+                        <div class="alert alert-info" role="alert">
+                            {{ message }}
+                        </div>
+                    {% endif %}
+
+                {% endfor %}
+
+            {% endif %}
             {% block content %}
 
             {% endblock %}
@@ -46,7 +52,7 @@
                             <li class="page-item active" aria-current="page">
                                 <a class="page-link" href="?page={{ p }}">{{ p }}</a>
                             </li>
-                        {% elif p > page_obj.number|add:-3 and  p < page_obj.number|add:+3%}
+                        {% elif p > page_obj.number|add:-3 and  p < page_obj.number|add:+3 %}
                             <li class="page-item " aria-current="page">
                                 <a class="page-link" href="?page={{ p }}">{{ p }}</a>
                             </li>

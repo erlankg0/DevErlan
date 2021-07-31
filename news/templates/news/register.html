@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    Регистрация :: {{ block.super }}
+{% endblock %}
+
+{% block sidebar %}
+    {% include 'news/list_categories.html' %}
+{% endblock %}
+{% block content %}
+    <h1>Регистрация пользователя.</h1>
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form.non_field_errors }}
+        <div class="mb-3">
+            <label for="id_username" class="form-label">Колдонуучу аты:</label>
+            {{ form.username }}
+            <div class="valid-feedback">
+                {{ form.username.errors }}
+            </div>
+            <div class="form-text ">Талап кылынат. 150 же аз арип, сан жана @/./+/-/_ лар гана.</div>
+            <label for="{{ form.email.id_for_label }}" class="form-label">Электрондук почта</label>
+            {{ form.email }}
+            <div class="valid-feedback">
+                {{ form.email.errors }}
+            </div>
+            <div class="form-text"></div>
+            <label for="{{ form.password1.id_for_label }}" class="form-label">Сырсөз</label>
+            {{ form.password1 }}
+            <div class="valid-feedback">
+                {{ form.password1.errors }}
+            </div>
+            <div class="form-text">
+                <ol>
+                    <li>Сиздин сырсөз башка жеке маалыматыңызга окшош болбоосу керек.</li>
+                    <li>Сиздин сырсөз жок дегенде 8 символ камтышы керек.</li>
+                    <li>Сиздин сырсөз өтө эле жалпы колдонуудагы сырсөз болбоосу керек.</li>
+                    <li>Сиздин сырсөз жалаң эле сандардан турбашы керек.</li>
+                </ol>
+            </div>
+            <label for="{{ form.password2.id_for_label }}" class="form-label">Сырсөз</label>
+            {{ form.password2 }}
+            <div class="valid-feedback">
+                {{ form.password2.errors }}
+            </div>
+            <div class="form-text">Кайта кайралагыла 'Сырсөз' </div>
+        </div>
+
+        <button type="submit" class="btn btn-primary btn-block">Сактоо.</button>
+    </form>
+{% endblock %}
