@@ -1,9 +1,18 @@
-from django.views.generic import ListView, DetailView, CreateView
 from django.core.paginator import Paginator
+from django.shortcuts import render
+from django.views.generic import ListView, DetailView, CreateView
+
 from .forms import NewsForm
 from .models import News, Category
-
 from .utils import MyMixin
+
+
+def test(request):
+    objects = ['Erlan', 'Daniel', 'Saken', 'Ozcan', 'Ozan', 'Onan', 'Askar', 'Rasul', 'Daniyar', 'Kani', 'Kayrat']
+    paginator = Paginator(objects, 3)
+    pag_num = request.GET.get('page', 1)
+    page_obj = paginator.get_page(pag_num)
+    return render(request, 'news/test.html', {'page_obj': page_obj, 'object': objects})
 
 
 class HomeNews(ListView, MyMixin):
