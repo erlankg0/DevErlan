@@ -8,5 +8,10 @@
     {% include 'inc/_sidebar.html' %}
 {% endblock %}
 {% block content %}
-    <h1>Регистрация пользователя.</h1>
+    <form method="post">
+        <h1>Login.</h1>
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn btn-primary btn-danger">Login in.</button>
+    </form>
 {% endblock %}

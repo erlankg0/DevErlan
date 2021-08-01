@@ -3,3 +3,4 @@ class MyMixin(object):
 
     def get_prop(self):
         return self.mixin_prop.upper()
+

@@ -2,7 +2,7 @@ from django.conf import settings
 from django.conf.urls.static import static
 from django.urls import path
 
-from .views import HomeNews, CategoryList, DetailNews, CreatNews, test, register, login
+from .views import HomeNews, CategoryList, DetailNews, CreatNews, test, register, user_login, user_logout
 
 urlpatterns = [
     path('', HomeNews.as_view(), name="home"),
@@ -11,7 +11,8 @@ urlpatterns = [
     path("news/add_news/", CreatNews.as_view(), name='add_news'),
     path('test/', test, name='test'),
     path('register/', register, name='register'),
-    path('login/', login, name='login'),
+    path('login/', user_login, name='login'),
+    path('logout/', user_logout, name='logout'),
 ]
 
 if settings.DEBUG:

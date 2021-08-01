@@ -2,10 +2,15 @@ from django.contrib import messages
 from django.core.paginator import Paginator
 from django.shortcuts import render, redirect
 from django.views.generic import ListView, DetailView, CreateView
-
-from .forms import NewsForm, UserRegisterForm
+from django.contrib.auth import login, logout
+from .forms import NewsForm, UserRegisterForm, UserLoginForm
 from .models import News, Category
 from .utils import MyMixin
+
+
+def user_logout(request):
+    logout(request)
+    return redirect('home')
 
 
 def register(request):
@@ -13,9 +18,10 @@ def register(request):
         form = UserRegisterForm(request.POST)
         categories = Category.objects.all()
         if form.is_valid():
-            form.save()
+            user = form.save()
+            login(request, user)
             messages.success(request, 'Вы зарегистрировались.')
-            return redirect('login')
+            return redirect('home')
         else:
             messages.error(request, 'Ошибка')
     else:
@@ -25,10 +31,16 @@ def register(request):
     return render(request, 'news/register.html', {'form': form, 'categories': categories})
 
 
-def login(request):
-    categories = Category.objects.all()
-
-    return render(request, 'news/login.html')
+def user_login(request):
+    if request.method == "POST":
+        form = UserLoginForm(data=request.POST)
+        if form.is_valid():
+            user = form.get_user()
+            login(request, user)
+            return redirect('home')
+    else:
+        form = UserLoginForm()
+    return render(request, 'news/login.html', {'form': form, })
 
 
 def test(request):
