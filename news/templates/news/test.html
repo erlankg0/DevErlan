@@ -6,8 +6,12 @@
     {% include 'news/list_categories.html' %}
 {% endblock %}
 {% block content %}
-    {% for name in page_obj.object_list %}
-        <p>{{ name }}</p>
-    {% endfor %}
+    <p>Обратная связь.</p>
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn btn-primary btn-block">Отправить.</button>
+
+    </form>
 
 {% endblock %}

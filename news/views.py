@@ -3,9 +3,11 @@ from django.core.paginator import Paginator
 from django.shortcuts import render, redirect
 from django.views.generic import ListView, DetailView, CreateView
 from django.contrib.auth import login, logout
-from .forms import NewsForm, UserRegisterForm, UserLoginForm
+from .forms import NewsForm, UserRegisterForm, UserLoginForm, ContactForm
 from .models import News, Category
 from .utils import MyMixin
+from django.core.mail import send_mail
+from Dev import settings
 
 
 def user_logout(request):
@@ -44,11 +46,27 @@ def user_login(request):
 
 
 def test(request):
-    objects = ['Erlan', 'Daniel', 'Saken', 'Ozcan', 'Ozan', 'Onan', 'Askar', 'Rasul', 'Daniyar', 'Kani', 'Kayrat']
-    paginator = Paginator(objects, 3)
-    pag_num = request.GET.get('page', 1)
-    page_obj = paginator.get_page(pag_num)
-    return render(request, 'news/test.html', {'page_obj': page_obj, 'object': objects})
+    if request.method == 'POST':
+        form = ContactForm(request.POST)
+        categories = Category.objects.all()
+        if form.is_valid():
+            subject = form.cleaned_data['subject']
+            message = form.cleaned_data['content']
+            email_from = settings.EMAIL_HOST_USER
+            recipient = ['era.ab.02@gmail.com', ]
+            mail = send_mail(form.cleaned_data['subject'], form.cleaned_data['content'], 'era.ab.02@gmail.com',
+                             ['era.ab.02@gmail.com'], fail_silently=False)
+            if mail:
+                messages.success(request, 'Письмо отправлено.')
+                return redirect('test')
+            else:
+                messages.error(request, 'Ошибка отправки письма')
+
+            return redirect('home')
+    else:
+        form = ContactForm()
+        categories = Category.objects.all()
+    return render(request, 'news/test.html', {'form': form, 'categories': categories})
 
 
 class HomeNews(ListView, MyMixin):
