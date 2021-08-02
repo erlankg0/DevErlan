@@ -21,7 +21,7 @@
 
                     <div class="media-body">
                         <h5 class="card-title {% cycle 'text-danger' 'text-success' %}">{{ news_item.title }}</h5>
-                        <p class="card-text">{{ news_item.content }}.</p>
+                        <p class="card-text">{{ news_item.content|safe|linebreaks|truncatewords:50 }}.</p>
                     </div>
                     <div class="card-footer text-muted">
                         {{ news_item.created_at | date:"Y-m-d" }}

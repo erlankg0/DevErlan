@@ -55,7 +55,7 @@ def test(request):
             email_from = settings.EMAIL_HOST_USER
             recipient = ['era.ab.02@gmail.com', ]
             mail = send_mail(form.cleaned_data['subject'], form.cleaned_data['content'], 'era.ab.02@gmail.com',
-                             ['era.ab.02@gmail.com'], fail_silently=False)
+                             ['era.ab.02@gmail.com', 'sakenab11@gmail.com', ], fail_silently=False)
             if mail:
                 messages.success(request, 'Письмо отправлено.')
                 return redirect('test')
